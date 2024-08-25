@@ -146,11 +146,20 @@ async def main() -> None:
                     createMessage(flagByteDict['history'])
                     historyMsg = can.Message(arbitration_id=id, data=canMsgData, is_extended_id=False)
                     can0.send(historyMsg)
-                
-            receivedMsg = can0.recv(0.1)
-            if receivedMsg  is  not None:
-                print("Received:", receivedMsg.arbitration_id)
+            #Receive part
 
+            reader = can.AsyncBufferedReader()
+            logger = can.Logger("logfile.asc")
+
+            listeners :List[MessageRecipient] = [
+                analyzeMessage(), # Callback function
+                reader, # AsyncBufferReader() Listner
+                logger, # Regular Listner object
+            ]
+            #Create Notifier with an explicit loop to use for scheduling of callbacks
+            loop = asyncio.get_running_loop()
+            notifier = can.Notifier(can0, listeners,loop=loop)
+            await reader.get_message()
 
     finally:
         # Closing CAN module
