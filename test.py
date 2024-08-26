@@ -98,7 +98,7 @@ def analyzeMessage(receivedID, receivedMsg):
         print("history")
                                                                                                                      
                                                                               
-async def main() -> None:                                                                                                                                                                                                                                                                                                       
+def main() -> None:                                                                                                                                                                                                                                                                                                       
     # Initializing CAN module
     can0 = can.interface.Bus(channel='can0', interface='socketcan')  # using socketcan
     #can1 = can.interface.Bus(channel='can1', interface='socketcan')  # using socketcan
