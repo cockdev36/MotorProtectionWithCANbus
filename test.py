@@ -101,7 +101,7 @@ def analyzeMessage(receivedID, receivedMsg):
 async def main() -> None:                                                                                                                                                                                                                                                                                                       
     # Initializing CAN module
     can0 = can.interface.Bus(channel='can0', interface='socketcan')  # using socketcan
-    can1 = can.interface.Bus(channel='can1', interface='socketcan')  # using socketcan
+    #can1 = can.interface.Bus(channel='can1', interface='socketcan')  # using socketcan
 
     try:
 
@@ -164,7 +164,7 @@ async def main() -> None:
     finally:
         # Closing CAN module
         can0.shutdown()
-        can1.shutdown()
+        #can1.shutdown()
 
         # Closing CAN communication
         os.system('sudo ifconfig can0 down')
