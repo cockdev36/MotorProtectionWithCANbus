@@ -64,6 +64,8 @@ class CANBusApp:
         
         self.event = threading.Event()
         self.slave_ID = ""
+        
+        self.can_message = CANMSG()
 
     def start_simulation(self):
         self.simulation_running = True
@@ -129,11 +131,13 @@ class CANBusApp:
             if self.can_id_entry.get() != "":
                 can_id = int(self.can_id_entry.get(), 16)  # Getting CAN ID in hex format
                 print(f"Entry checking")
-            message = "Slave"         
+            self.can_message.create_message(self.can_message.msg_type[0])   
+            message = self.can_message.can_msg_data;  
+            print("message", message)
             if message:
                 msg = can.Message(arbitration_id=0x01, data=message.encode())
                 time.sleep(0.0005)
-                print(message)
+                #print(message)
                 try:
                     #print(f"Message {msg} sent with CAN ID {11}")
                     self.bus.send(msg)              
@@ -172,7 +176,7 @@ class CANBusApp:
 class CANMSG:
     def __init__(self):
         # Can Flag byte
-        self.dict_flag_byte = { 
+        self.msg_type = { 
             "status": 0x01, 
             "alarm_threshold": 0x02, 
             "rw_setting": 0x04,
